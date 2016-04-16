@@ -47,5 +47,9 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Weather Man uses location to show to weather</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Weather Man using location to find Weather conditions</string>
 </dict>
 </plist>

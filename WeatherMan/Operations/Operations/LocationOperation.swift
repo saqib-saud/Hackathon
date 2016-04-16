@@ -53,7 +53,14 @@ class LocationOperation: Operation, CLLocationManagerDelegate {
             super.cancel()
         }
     }
-    
+    override func finished(errors: [NSError]) {
+        if let firstError = errors.first {
+            let alert = AlertOperation()
+            alert.title = "Location Error"
+            alert.message = firstError.localizedDescription
+            produceOperation(alert)
+        }
+    }
     private func stopLocationUpdates() {
         manager?.stopUpdatingLocation()
         manager = nil

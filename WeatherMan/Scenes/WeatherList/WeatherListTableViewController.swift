@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import MapKit
 
 class WeatherListTableViewController: UITableViewController {
 
@@ -16,9 +17,9 @@ class WeatherListTableViewController: UITableViewController {
     let operationQueue = OperationQueue()
     
     func setup() {
-        let refreshControl = UIRefreshControl()
-        self.tableView.addSubview(refreshControl)
-        refreshControl.addTarget(self, action: Selector("startRefreshing:"), forControlEvents: UIControlEvents.ValueChanged)
+//        let refreshControl = UIRefreshControl()
+//        self.tableView.addSubview(refreshControl)
+//        refreshControl.addTarget(self, action: Selector("startRefreshing:"), forControlEvents: UIControlEvents.ValueChanged)
         
         self.tableView.registerNib(WeatherTableViewCell.cellNib(), forCellReuseIdentifier: WeatherTableViewCell.cellIdentifier())
     }
@@ -39,7 +40,7 @@ class WeatherListTableViewController: UITableViewController {
                 let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
                 
                 self.fetchedResultsController = controller
-                
+                self.updateLocation()
                 self.updateUI()
             }
         }
@@ -80,12 +81,12 @@ class WeatherListTableViewController: UITableViewController {
 
     //MARK: - Network Requests
     @IBAction func startRefreshing(sender: UIRefreshControl) {
-        getWeatherUpdates()
+        updateLocation()
     }
     
-    private func getWeatherUpdates(userInitiated: Bool = true) {
+    private func getWeatherUpdates(userInitiated: Bool = true, location:CLLocation) {
         if let context = fetchedResultsController?.managedObjectContext {
-            let getWeatherDataOperation = GetWeatherDataOperation(context: context) {
+            let getWeatherDataOperation = GetWeatherDataOperation(currentLocation: location, context: context) {
                 dispatch_async(dispatch_get_main_queue()) {
                     self.refreshControl?.endRefreshing()
                     self.updateUI()
@@ -116,6 +117,13 @@ class WeatherListTableViewController: UITableViewController {
         }
         
         self.tableView.reloadData()
+    }
+    
+    private func updateLocation() {
+        let locationOperation = LocationOperation(accuracy: kCLLocationAccuracyKilometer) { location in
+            self.getWeatherUpdates(location: location)
+        }
+        operationQueue.addOperation(locationOperation)
     }
 
 }

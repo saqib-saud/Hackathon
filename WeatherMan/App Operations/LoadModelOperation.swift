@@ -51,21 +51,20 @@ class LoadModelOperation: Operation {
         let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
         context.persistentStoreCoordinator = persistentStoreCoordinator
         
-        var error = createStore(persistentStoreCoordinator, atURL: storeURL)
+        var error:NSError!
 
-        if persistentStoreCoordinator.persistentStores.isEmpty {
-            /*
-                Our persistent store does not contain irreplaceable data (which
-                is why it's in the Caches folder). If we fail to add it, we can
-                delete it and try again.
-            */
-            destroyStore(persistentStoreCoordinator, atURL: storeURL)
-            error = createStore(persistentStoreCoordinator, atURL: storeURL)
-        }
+//        if persistentStoreCoordinator.persistentStores.isEmpty {
+//            /*
+//                Our persistent store does not contain irreplaceable data (which
+//                is why it's in the Caches folder). If we fail to add it, we can
+//                delete it and try again.
+//            */
+//            destroyStore(persistentStoreCoordinator, atURL: storeURL)
+//            error = createStore(persistentStoreCoordinator, atURL: storeURL)
+//        }
         
         if persistentStoreCoordinator.persistentStores.isEmpty {
-            print("Error creating SQLite store: \(error).")
-            print("Falling back to `.InMemory` store.")
+
             error = createStore(persistentStoreCoordinator, atURL: nil, type: NSInMemoryStoreType)
         }
         

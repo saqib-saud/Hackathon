@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import MapKit
 
 class GetWeatherDataOperation: GroupOperation {
     let downloadOperation: DownloadWeatherOperation
@@ -22,7 +23,7 @@ class GetWeatherDataOperation: GroupOperation {
      parsing are complete. This handler will be
      invoked on an arbitrary queue.
      */
-    init(context: NSManagedObjectContext, completionHandler: Void -> Void) {
+    init(currentLocation: CLLocation, context: NSManagedObjectContext, completionHandler: Void -> Void) {
         let cachesFolder = try! NSFileManager.defaultManager().URLForDirectory(.CachesDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
         
         let cacheFile = cachesFolder.URLByAppendingPathComponent("weather.json")
@@ -33,7 +34,7 @@ class GetWeatherDataOperation: GroupOperation {
          2. The operation to parse the JSON feed and insert the elements into the Core Data store
          3. The operation to invoke the completion handler
          */
-        downloadOperation = DownloadWeatherOperation(cacheFile: cacheFile)
+        downloadOperation = DownloadWeatherOperation(location:currentLocation, cacheFile: cacheFile)
         parseOperation = ParseWeatherDataOperation(cacheFile: cacheFile, context: context)
         
         let finishOperation = NSBlockOperation(block: completionHandler)
