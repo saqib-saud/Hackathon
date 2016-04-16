@@ -32,7 +32,7 @@ class WeatherListTableViewController: UITableViewController {
             dispatch_async(dispatch_get_main_queue()) {
                 let request = NSFetchRequest(entityName: Weather.entityName)
                 
-                request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+                request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
                 
                 request.fetchLimit = 100
                 
@@ -67,14 +67,18 @@ class WeatherListTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(WeatherTableViewCell.cellIdentifier(), forIndexPath: indexPath) as! WeatherTableViewCell
         
-        if let earthquake = fetchedResultsController?.objectAtIndexPath(indexPath) as? Weather {
-            cell.configure(earthquake)
+        if let weather = fetchedResultsController?.objectAtIndexPath(indexPath) as? Weather {
+            cell.configure(weather)
         }
         
         return cell
     }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 40
+    }
 
-    // Mark: - Network Requests
+    //MARK: - Network Requests
     @IBAction func startRefreshing(sender: UIRefreshControl) {
         getWeatherUpdates()
     }

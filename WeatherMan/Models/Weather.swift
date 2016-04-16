@@ -16,7 +16,6 @@ class Weather: NSManagedObject {
     static let timestampFormatter: NSDateFormatter = {
         let timestampFormatter = NSDateFormatter()
         timestampFormatter.dateFormat = "EEEE"
-    
         return timestampFormatter
     }()
 }

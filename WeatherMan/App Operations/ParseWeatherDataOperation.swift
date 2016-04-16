@@ -22,14 +22,17 @@ private struct ParsedWeather {
     // MARK: Initialization
     
     init?(weather: [String: AnyObject]) {
-        let properties = weather["list"] as? [String: AnyObject] ?? [:]
-        
-        minTemperature = 0
-        maxTemperature = 0
-        weatherIcon = ""
-        weatherDescription = ""
-        if let offset = properties["dt"] as? Double {
-            date = NSDate(timeIntervalSince1970: offset / 1000)
+        let temperature = weather["temp"] as? [String: AnyObject] ?? [:]
+        let climate = weather["weather"] as! [AnyObject] ?? []
+        let weathDetails = climate.first as? [String: AnyObject] ?? [:]
+
+        minTemperature = temperature["min"] as? NSNumber ?? NSNumber(double: 0)
+        maxTemperature = temperature["max"] as? NSNumber ?? NSNumber(double: 0)
+        weatherIcon = weathDetails["icon"] as? String ?? ""
+        weatherDescription = weathDetails["description"] as? String ?? ""
+
+        if let offset = weather["dt"] as? Double {
+            date = NSDate(timeIntervalSince1970: offset)
         }
         else {
             date = NSDate.distantFuture()

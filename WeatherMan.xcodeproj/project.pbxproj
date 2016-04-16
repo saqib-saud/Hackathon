@@ -181,6 +181,7 @@
 		B0E1CB321CC20E7E003B0A3D /* WeatherListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherListTableViewController.swift; sourceTree = "<group>"; };
 		B0E1CB351CC20EB7003B0A3D /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		B0E1CB381CC21771003B0A3D /* WeatherTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WeatherTableViewCell.xib; sourceTree = "<group>"; };
+		B0E1CB3C1CC22D18003B0A3D /* Readme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,6 +205,7 @@
 		B0E1CA591CC1FF8E003B0A3D = {
 			isa = PBXGroup;
 			children = (
+				B0E1CB3C1CC22D18003B0A3D /* Readme */,
 				B0E1CA641CC1FF8E003B0A3D /* WeatherMan */,
 				B0E1CA791CC1FF8F003B0A3D /* WeatherManTests */,
 				B0E1CA631CC1FF8E003B0A3D /* Products */,
@@ -251,14 +253,12 @@
 		B0E1CA931CC20248003B0A3D /* App Operations */ = {
 			isa = PBXGroup;
 			children = (
+				B0E1CB3B1CC2217F003B0A3D /* WeatherAPI */,
 				B0E1CA941CC20248003B0A3D /* AlertOperation.swift */,
 				B0E1CA951CC20248003B0A3D /* BackgroundObserver.swift */,
-				B0E1CB221CC206D8003B0A3D /* DownloadWeatherOperation.swift */,
 				B0E1CA981CC20248003B0A3D /* LoadModelOperation.swift */,
 				B0E1CA991CC20248003B0A3D /* MoreInformationOperation.swift */,
 				B0E1CA9A1CC20248003B0A3D /* NetworkObserver.swift */,
-				B0E1CB251CC20705003B0A3D /* ParseWeatherDataOperation.swift */,
-				B0E1CB1F1CC206A8003B0A3D /* GetWeatherDataOperation.swift */,
 			);
 			path = "App Operations";
 			sourceTree = "<group>";
@@ -368,6 +368,16 @@
 				B0E1CB381CC21771003B0A3D /* WeatherTableViewCell.xib */,
 			);
 			path = WeatherList;
+			sourceTree = "<group>";
+		};
+		B0E1CB3B1CC2217F003B0A3D /* WeatherAPI */ = {
+			isa = PBXGroup;
+			children = (
+				B0E1CB1F1CC206A8003B0A3D /* GetWeatherDataOperation.swift */,
+				B0E1CB221CC206D8003B0A3D /* DownloadWeatherOperation.swift */,
+				B0E1CB251CC20705003B0A3D /* ParseWeatherDataOperation.swift */,
+			);
+			name = WeatherAPI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

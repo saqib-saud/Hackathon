@@ -25,9 +25,9 @@ class WeatherTableViewCell: UITableViewCell, TableViewCellProtocol {
     func configure(weather: Weather) {
         dayLabel.text = Weather.timestampFormatter.stringFromDate(weather.date!)
         
-        minTemperatureLabel.text = String(weather.minTemp)
-        maxTemperatureLabel.text = String(weather.maxTemp)
-        weatherDescriptionLabel.text = weather.weatherDescription
+        minTemperatureLabel.text = String(weather.minTemp!)
+        maxTemperatureLabel.text = String(weather.maxTemp!)
+//        weatherDescriptionLabel.text = weather.weatherDescription
         weatherIcon.image = UIImage(named: weather.weatherIcon!)
     }
     
