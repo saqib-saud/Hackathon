@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import SDWebImage
 //This protocol is mandatory for every cell.
 protocol TableViewCellProtocol {
     static func cellIdentifier() -> String
@@ -22,13 +22,13 @@ class WeatherTableViewCell: UITableViewCell, TableViewCellProtocol {
     
     // MARK: Configuration
     
-    func configure(weather: Weather) {
-        dayLabel.text = Weather.timestampFormatter.stringFromDate(weather.date!)
-        
-        minTemperatureLabel.text = String(weather.minTemp!)
-        maxTemperatureLabel.text = String(weather.maxTemp!)
+    func configure(weather: Transit) {
+        dayLabel.text = String(weather.departureTime! + " - " + weather.arrivalTime!)
+        minTemperatureLabel.text = String("€ " + weather.priceInEuros!)
 //        weatherDescriptionLabel.text = weather.weatherDescription
-        weatherIcon.image = UIImage(named: weather.weatherIcon!)
+//        print(weather.providerLogo!.stringByReplacingOccurrencesOfString("{size}", withString: "63"))
+        weatherIcon.sd_setImageWithURL(NSURL(string: weather.providerLogo!.stringByReplacingOccurrencesOfString("{size}", withString: "63")))
+
     }
     
     static func cellIdentifier() -> String {

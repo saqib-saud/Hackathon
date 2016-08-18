@@ -17,7 +17,7 @@ class DownloadWeatherOperation: GroupOperation {
     // MARK: Initialization
     
     /// - parameter cacheFile: The file `NSURL` to which the earthquake feed will be downloaded.
-    init(location:CLLocation, cacheFile: NSURL) {
+    init(service:WebServiceConstants, cacheFile: NSURL) {
         self.cacheFile = cacheFile
         super.init(operations: [])
         name = "Download Weather Forecast"
@@ -30,9 +30,8 @@ class DownloadWeatherOperation: GroupOperation {
          or when the services you use offer secure communication options, you
          should always prefer to use https.
          */
-        k.apiWeatherDownloadURL
         
-        let url = NSURL(string: String(format: k.apiWeatherDownloadURL, String(location.coordinate.latitude), String(location.coordinate.longitude), k.apiKey))!
+        let url = NSURL(string: service.rawValue)!
         print("URL:\(url)")
         
         let task = NSURLSession.sharedSession().downloadTaskWithURL(url) { url, response, error in

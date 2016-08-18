@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15D21" minimumToolsVersion="Xcode 7.0">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11224.2" systemVersion="15G31" minimumToolsVersion="Xcode 7.0" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="Transit" representedClassName=".Transit" syncable="YES">
+        <attribute name="arrivalTime" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="departureTime" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="numberOfStops" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="priceInEuros" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="providerLogo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="transitId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="transitType" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Weather" representedClassName=".Weather" syncable="YES">
-        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="maxTemp" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="minTemp" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="maxTemp" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="minTemp" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="transitType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="weatherDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="weatherIcon" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Weather" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="Transit" positionX="-63" positionY="18" width="128" height="150"/>
+        <element name="Weather" positionX="-63" positionY="-18" width="128" height="135"/>
     </elements>
 </model>

@@ -13,30 +13,20 @@ import CoreData
 private struct ParsedWeather {
     // MARK: Properties.
     
-    let date: NSDate
-    
-    let minTemperature, maxTemperature: NSNumber
-    let weatherIcon, weatherDescription: String
-    
+    let numberOfStops, transitId: NSNumber
+    let departureTime, arrivalTime, providerLogo, priceInEuros: String
+    let webservice:WebServiceConstants
     
     // MARK: Initialization
     
-    init?(weather: [String: AnyObject]) {
-        let temperature = weather["temp"] as? [String: AnyObject] ?? [:]
-        let climate = weather["weather"] as! [AnyObject] ?? []
-        let weathDetails = climate.first as? [String: AnyObject] ?? [:]
-
-        minTemperature = temperature["min"] as? NSNumber ?? NSNumber(double: 0)
-        maxTemperature = temperature["max"] as? NSNumber ?? NSNumber(double: 0)
-        weatherIcon = weathDetails["icon"] as? String ?? ""
-        weatherDescription = weathDetails["description"] as? String ?? ""
-
-        if let offset = weather["dt"] as? Double {
-            date = NSDate(timeIntervalSince1970: offset)
-        }
-        else {
-            date = NSDate.distantFuture()
-        }
+    init?(weather: [String: AnyObject], webservice:WebServiceConstants) {
+        transitId = weather["id"] as? NSNumber ?? NSNumber(double: 0)
+        providerLogo = weather["provider_logo"] as? String ?? ""
+        priceInEuros = weather["price_in_euros"] as? String ?? String(weather["price_in_euros"] as! NSNumber)
+        departureTime = weather["departure_time"] as? String ?? ""
+        arrivalTime = weather["arrival_time"] as? String ?? ""
+        numberOfStops = weather["number_of_stops"] as? NSNumber ?? NSNumber(double: 0)
+        self.webservice = webservice
     }
 }
 
@@ -44,7 +34,7 @@ private struct ParsedWeather {
 class ParseWeatherDataOperation: Operation {
     let cacheFile: NSURL
     let context: NSManagedObjectContext
-    
+    let webservice:WebServiceConstants
     /**
      - parameter cacheFile: The file `NSURL` from which to load earthquake data.
      - parameter context: The `NSManagedObjectContext` that will be used as the
@@ -53,10 +43,10 @@ class ParseWeatherDataOperation: Operation {
      to the same `NSPersistentStoreCoordinator` as the
      passed-in context.
      */
-    init(cacheFile: NSURL, context: NSManagedObjectContext) {
+    init(cacheFile: NSURL, context: NSManagedObjectContext, webservice:WebServiceConstants) {
         let importContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         importContext.persistentStoreCoordinator = context.persistentStoreCoordinator
-        
+        self.webservice = webservice
         /*
          Use the overwrite merge policy, because we want any updated objects
          to replace the ones in the store.
@@ -84,10 +74,10 @@ class ParseWeatherDataOperation: Operation {
         }
         
         do {
-            let json = try NSJSONSerialization.JSONObjectWithStream(stream, options: []) as? [String: AnyObject]
+            let json = try NSJSONSerialization.JSONObjectWithStream(stream, options: []) as? [[String: AnyObject]]
             
-            if let features = json?["list"] as? [[String: AnyObject]] {
-                parse(features)
+            if let _ = json {
+                parse(json!)
             }
             else {
                 finish()
@@ -99,7 +89,7 @@ class ParseWeatherDataOperation: Operation {
     }
     
     private func parse(features: [[String: AnyObject]]) {
-        let parsedEarthquakes = features.flatMap { ParsedWeather(weather: $0) }
+        let parsedEarthquakes = features.flatMap { ParsedWeather(weather: $0, webservice: self.webservice)}
         
         context.performBlock {
             for newEarthquake in parsedEarthquakes {
@@ -112,13 +102,15 @@ class ParseWeatherDataOperation: Operation {
     }
     
     private func insert(parsed: ParsedWeather) {
-        let weather = NSEntityDescription.insertNewObjectForEntityForName(Weather.entityName, inManagedObjectContext: context) as! Weather
+        let transit = NSEntityDescription.insertNewObjectForEntityForName(Transit.entityName, inManagedObjectContext: context) as! Transit
         
-        weather.date = parsed.date
-        weather.minTemp = parsed.minTemperature
-        weather.maxTemp = parsed.maxTemperature
-        weather.weatherIcon = parsed.weatherIcon
-        weather.weatherDescription = parsed.weatherDescription
+        transit.transitId = parsed.transitId
+        transit.providerLogo = parsed.providerLogo
+        transit.priceInEuros = parsed.priceInEuros
+        transit.arrivalTime = parsed.arrivalTime
+        transit.departureTime = parsed.departureTime
+        transit.priceInEuros = parsed.priceInEuros
+        transit.transitType = webservice.rawValue
     }
     
     /**
