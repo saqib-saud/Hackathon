@@ -1,6 +1,8 @@
 
 
--Todo -
+Use the existing code base (https://github.com/wisesabre/WeatherMan) for this hackathon.
 
-1. CLLocation
-2. Coredata delete all objects
+Xcode: 8.0
+Swift: 2.3
+
+Using in-memory coredata model.
